@@ -142,17 +142,22 @@ export function AddEditModal({ editing, onSave, onUpdate, onDelete, onClose }: P
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
       <div
-        className="w-full max-w-lg rounded-2xl"
+        className="w-full sm:max-w-lg rounded-t-[22px] sm:rounded-2xl"
         style={{
           background: 'var(--surface)',
           border: '1px solid var(--border-strong)',
-          maxHeight: 'calc(100vh - 32px)',
+          maxHeight: '92dvh',
           overflowY: 'auto',
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Drag handle — mobile only */}
+        <div className="sm:hidden flex justify-center pt-3 pb-1">
+          <div style={{ width: 36, height: 4, borderRadius: 2, background: 'var(--border-strong)' }} />
+        </div>
+
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
+        <div className="flex items-center justify-between px-4 sm:px-6 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
           <h2 className="font-bold text-base" style={{ color: 'var(--text)' }}>
             {editing ? 'Edit Subscription' : 'Add Subscription'}
           </h2>
@@ -165,7 +170,7 @@ export function AddEditModal({ editing, onSave, onUpdate, onDelete, onClose }: P
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+        <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-5 space-y-4">
           {/* Brand search */}
           <div ref={searchRef} className="relative">
             <Label>Service / Brand</Label>
@@ -359,40 +364,52 @@ export function AddEditModal({ editing, onSave, onUpdate, onDelete, onClose }: P
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3 pt-1">
-            {editing && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (confirmDelete) { onDelete(editing.id); onClose() }
-                  else { setConfirmDelete(true); setTimeout(() => setConfirmDelete(false), 3000) }
-                }}
-                className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all"
-                style={{
-                  background: confirmDelete ? 'rgba(220,38,38,0.12)' : 'var(--surface-2)',
-                  border: confirmDelete ? '1px solid rgba(220,38,38,0.5)' : '1px solid var(--border)',
-                  color: confirmDelete ? '#EF4444' : 'var(--text-faint)',
-                }}
-              >
-                <Trash2 size={14} />
-                {confirmDelete ? 'Confirm delete' : 'Delete'}
-              </button>
-            )}
-            <div className="flex-1" />
-            <button
-              type="button" onClick={onClose}
-              className="px-4 py-2.5 rounded-xl text-sm font-semibold"
-              style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
-            >
-              Cancel
-            </button>
+          <div className="pt-1 space-y-2">
+            {/* Mobile: submit spans full width */}
             <button
               type="submit" disabled={!isValid()}
-              className="px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed"
+              className="sm:hidden w-full py-3 rounded-xl text-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed"
               style={{ background: 'var(--accent-dim)', border: '1px solid var(--accent)', color: 'var(--accent)' }}
             >
               {editing ? 'Save changes' : 'Add subscription'}
             </button>
+
+            <div className="flex items-center gap-3">
+              {editing && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (confirmDelete) { onDelete(editing.id); onClose() }
+                    else { setConfirmDelete(true); setTimeout(() => setConfirmDelete(false), 3000) }
+                  }}
+                  className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all"
+                  style={{
+                    background: confirmDelete ? 'rgba(220,38,38,0.12)' : 'var(--surface-2)',
+                    border: confirmDelete ? '1px solid rgba(220,38,38,0.5)' : '1px solid var(--border)',
+                    color: confirmDelete ? '#EF4444' : 'var(--text-faint)',
+                  }}
+                >
+                  <Trash2 size={14} />
+                  {confirmDelete ? 'Confirm delete' : 'Delete'}
+                </button>
+              )}
+              <div className="hidden sm:block flex-1" />
+              <button
+                type="button" onClick={onClose}
+                className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl text-sm font-semibold"
+                style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
+              >
+                Cancel
+              </button>
+              {/* Desktop only — on mobile the full-width button above is used */}
+              <button
+                type="submit" disabled={!isValid()}
+                className="hidden sm:block px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed"
+                style={{ background: 'var(--accent-dim)', border: '1px solid var(--accent)', color: 'var(--accent)' }}
+              >
+                {editing ? 'Save changes' : 'Add subscription'}
+              </button>
+            </div>
           </div>
         </form>
       </div>
