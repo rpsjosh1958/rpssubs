@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+/* =========================================================
+   NeonSubs — Dark / Light theme CSS variables
+   ========================================================= */
+
+:root {
+  /* Dark theme (default) */
+  --bg: #060A14;
+  --surface: #0D1626;
+  --surface-2: #111E33;
+  --border: rgba(0, 229, 255, 0.08);
+  --border-strong: rgba(0, 229, 255, 0.18);
+
+  --text: #E8EDF5;
+  --text-muted: #7B8BA6;
+  --text-faint: #4A5670;
+
+  --accent: #00E5FF;
+  --accent-dim: rgba(0, 229, 255, 0.12);
+  --accent-glow: 0 0 24px rgba(0, 229, 255, 0.35);
+
+  --clr-critical: #FF4500;
+  --clr-warning: #FF9500;
+  --clr-soon: #00E5FF;
+  --clr-safe: #00FF9E;
+  --clr-trial: #FF00FF;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+}
+
+[data-theme="light"] {
+  --bg: #F0F4F8;
+  --surface: #FFFFFF;
+  --surface-2: #F5F8FC;
+  --border: rgba(14, 30, 64, 0.09);
+  --border-strong: rgba(14, 30, 64, 0.18);
+
+  --text: #0F1A2E;
+  --text-muted: #4A5E7A;
+  --text-faint: #8A9AB8;
+
+  --accent: #0070CC;
+  --accent-dim: rgba(0, 112, 204, 0.08);
+  --accent-glow: 0 0 20px rgba(0, 112, 204, 0.2);
+
+  --clr-critical: #D93B00;
+  --clr-warning: #CC7A00;
+  --clr-soon: #0070CC;
+  --clr-safe: #007A4A;
+  --clr-trial: #9900CC;
+}
+
+/* =========================================================
+   Base
+   ========================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  transition: background 0.25s, color 0.25s;
+}
+
+/* =========================================================
+   Neon grid background
+   ========================================================= */
+
+.bg-neon-grid {
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.025) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+
+[data-theme="light"] .bg-neon-grid {
+  background-image: none;
+}
+
+/* =========================================================
+   Scanlines overlay
+   ========================================================= */
+
+.scanlines::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.035) 2px,
+    rgba(0, 0, 0, 0.035) 4px
+  );
+  z-index: 9999;
+}
+
+[data-theme="light"] .scanlines::before { display: none; }
+
+/* =========================================================
+   Scrollbar
+   ========================================================= */
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 9px; }
+
+/* =========================================================
+   Animations
+   ========================================================= */
+
+@keyframes neon-pulse-red {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 69, 0, 0.25); }
+  50%       { box-shadow: 0 0 24px rgba(255, 69, 0, 0.6), 0 0 4px rgba(255, 69, 0, 0.3) inset; }
+}
+
+@keyframes neon-pulse-magenta {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 0, 255, 0.2); }
+  50%       { box-shadow: 0 0 22px rgba(255, 0, 255, 0.55), 0 0 4px rgba(255, 0, 255, 0.25) inset; }
+}
+
+@keyframes card-in {
+  from { transform: translateY(10px) scale(0.985); }
+  to   { transform: none; }
+}
+
+@keyframes hero-count {
+  from { transform: scale(1.08); }
+  to   { transform: none; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.card-in  { animation: card-in 0.35s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.fade-in  { animation: fade-in 0.3s ease both; }
+.pulse-critical { animation: neon-pulse-red 2.2s ease-in-out infinite; }
+.pulse-trial    { animation: neon-pulse-magenta 2.2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-in, .fade-in, .pulse-critical, .pulse-trial { animation: none; }
+}
+
+/* =========================================================
+   Countdown font
+   ========================================================= */
+
+.countdown {
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   Modal backdrop
+   ========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
