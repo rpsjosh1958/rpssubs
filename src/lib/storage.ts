@@ -1,5 +1,4 @@
 import type { Subscription, FrequencyUnit } from '../types'
-import { advanceToNextCharge } from './urgency'
 
 const KEY = 'neonsubs:v1'
 
