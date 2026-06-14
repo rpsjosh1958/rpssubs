@@ -6,6 +6,7 @@ import { Header } from './components/Header'
 import { HeroCard } from './components/HeroCard'
 import { SubscriptionGrid } from './components/SubscriptionGrid'
 import { AddEditModal } from './components/AddEditModal'
+import { EmptyState } from './components/EmptyState'
 
 function useTheme(): [Theme, () => void] {
   const [theme, setTheme] = useState<Theme>(() => {
@@ -71,23 +72,28 @@ export default function App() {
         activeSubs={subs.length}
       />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        {nextCharge && (
-          <HeroCard
-            sub={nextCharge}
-            totalGHSMonth={totalGHSMonth}
-            totalUSDMonth={totalUSDMonth}
-            activeSubs={subs.length}
-            onEdit={openEdit}
-          />
+      <main className="max-w-5xl mx-auto px-4 sm:px-6">
+        {subs.length === 0 ? (
+          <EmptyState onAdd={openAdd} theme={theme} />
+        ) : (
+          <div className="py-6 space-y-6">
+            {nextCharge && (
+              <HeroCard
+                sub={nextCharge}
+                totalGHSMonth={totalGHSMonth}
+                totalUSDMonth={totalUSDMonth}
+                activeSubs={subs.length}
+                onEdit={openEdit}
+              />
+            )}
+            <SubscriptionGrid
+              subs={subs}
+              sort={sort}
+              onSortChange={setSort}
+              onEdit={openEdit}
+            />
+          </div>
         )}
-
-        <SubscriptionGrid
-          subs={subs}
-          sort={sort}
-          onSortChange={setSort}
-          onEdit={openEdit}
-        />
       </main>
 
       {modalOpen && (
