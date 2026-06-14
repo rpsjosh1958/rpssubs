@@ -29,7 +29,7 @@ const STEPS = [
     icon: Search,
     number: '01',
     title: 'Search a brand',
-    desc: "Type any service name and we'll pull the logo and info instantly.",
+    desc: "Type any service name and we'll pull the Brand instantly.",
   },
   {
     icon: CalendarDays,
@@ -168,14 +168,8 @@ export function EmptyState({ onAdd, theme }: Props) {
 
       {/* Step cards */}
       <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 10,
-          width: '100%',
-          maxWidth: 560,
-          marginBottom: 44,
-        }}
+        className="grid grid-cols-1 sm:grid-cols-3"
+        style={{ gap: 10, width: '100%', maxWidth: 560, marginBottom: 44 }}
       >
         {STEPS.map((step, i) => {
           const Icon = step.icon
